@@ -1,6 +1,7 @@
-// src/RegisterMicro.jsx
+// src/PaginaMicro/RegisterMicro.jsx
 import React, { useState } from "react";
-import video1 from "./videos/video1.mp4"; // Importa el video desde la ruta relativa
+import { Link } from "react-router-dom";
+import video1 from "./videos/video1.mp4";
 
 export default function RegisterMicro() {
   const [loading, setLoading] = useState(false);
@@ -8,16 +9,15 @@ export default function RegisterMicro() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => setLoading(false), 2000); // Simulación de carga
+    setTimeout(() => setLoading(false), 2000);
   };
 
   return (
     <section className="relative h-screen flex items-center justify-center">
-      
       {/* Video de fondo */}
       <video
         className="absolute top-0 left-0 w-full h-full object-cover z-0"
-        src={video1} // Utiliza la variable importada para el video
+        src={video1}
         autoPlay
         loop
         muted
@@ -28,16 +28,15 @@ export default function RegisterMicro() {
 
       {/* Contenedor Principal con fondo gris claro */}
       <div className="flex max-w-5xl bg-gray-200 bg-opacity-90 rounded-lg shadow-lg overflow-hidden w-full z-20 gap-8">
-        
-        {/* Lado izquierdo - Texto e Imagen con animación */}
+        {/* Lado izquierdo - Texto e Imagen */}
         <div className="w-1/2 p-8 bg-black text-white flex flex-col justify-center items-center transition-transform duration-300 hover:scale-105 hover:shadow-lg">
           <h2 className="text-3xl font-bold mb-4">Bienvenido a TecnoShop</h2>
           <p className="text-lg mb-6 text-center">
             Regístrate para acceder a las herramientas personalizadas y gestionar tu microempresa de forma eficiente.
           </p>
-          <img 
-            src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp" 
-            alt="TecnoShop logo" 
+          <img
+            src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
+            alt="TecnoShop logo"
             className="w-40 h-40"
           />
         </div>
@@ -52,6 +51,7 @@ export default function RegisterMicro() {
           </h3>
 
           <form onSubmit={handleSubmit}>
+            {/* Campos de registro */}
             <div className="mb-4">
               <input
                 type="text"
@@ -81,6 +81,7 @@ export default function RegisterMicro() {
               />
             </div>
 
+            {/* Términos y Condiciones */}
             <div className="mb-4 flex items-center">
               <input
                 type="checkbox"
@@ -96,6 +97,7 @@ export default function RegisterMicro() {
               </label>
             </div>
 
+            {/* Botón de Registro */}
             <div className="mb-6 text-center">
               <button
                 type="submit"
@@ -131,11 +133,12 @@ export default function RegisterMicro() {
               </button>
             </div>
 
+            {/* Enlace para Iniciar Sesión */}
             <div className="text-center text-gray-600">
               ¿Ya tienes cuenta?{" "}
-              <a href="/" className="text-black font-semibold hover:underline">
+              <Link to="/login" className="text-black font-semibold hover:underline">
                 Inicia sesión ahora
-              </a>
+              </Link>
             </div>
           </form>
         </div>
