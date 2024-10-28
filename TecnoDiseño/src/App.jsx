@@ -26,7 +26,7 @@ function App() {
         <Route path="/admin/store" element={<StoreInfo />} />
         <Route path="/admin/categories" element={<CategoryManager />} />
         <Route path="/admin/orders" element={<OrdersTable />} />
-        <Route path="/store-preview" element={<StorePreview />} /> {/* Nueva ruta para la vista previa de tienda */}
+        <Route path="/store-preview" element={<StorePreview />} /> {/* Vista previa de la tienda */}
       </Routes>
     </Router>
   );

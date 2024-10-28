@@ -1,18 +1,46 @@
 // src/PaginaMicroAdmin/components/InventoryTable.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import Sidebar from './Sidebar';
 
 export default function InventoryTable() {
+  const initialInventory = [
+    { id: 1, name: 'Pieza A', quantity: 50, price: 10.0, supplier: 'Proveedor XYZ', category: 'Electrónica' },
+    { id: 2, name: 'Pieza B', quantity: 30, price: 15.0, supplier: 'Proveedor ABC', category: 'Repuestos' },
+  ];
+
+  const [inventory, setInventory] = useState(initialInventory);
+  const [editingId, setEditingId] = useState(null); // Guarda el ID del producto en edición
+  const [editedProduct, setEditedProduct] = useState({}); // Guarda los cambios temporales
+
+  const handleEditClick = (product) => {
+    setEditingId(product.id); // Cambia al modo de edición
+    setEditedProduct({ ...product }); // Clona el producto para editarlo
+  };
+
+  const handleSaveClick = (id) => {
+    setInventory(
+      inventory.map((item) =>
+        item.id === id ? editedProduct : item // Guarda los cambios en el producto específico
+      )
+    );
+    setEditingId(null); // Sal del modo de edición
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditedProduct((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   return (
     <div className="flex">
-      {/* Sidebar */}
       <Sidebar />
       
-      {/* Contenido principal */}
       <div className="flex-1 p-8">
         <h2 className="text-2xl font-bold mb-4">Inventario</h2>
-        
-        {/* Barra de búsqueda y botón para agregar nuevo inventario */}
+
         <div className="flex justify-between items-center mb-6">
           <input
             type="text"
@@ -24,7 +52,6 @@ export default function InventoryTable() {
           </button>
         </div>
 
-        {/* Tabla de inventario */}
         <table className="w-full border-collapse border border-gray-200">
           <thead>
             <tr>
@@ -38,19 +65,96 @@ export default function InventoryTable() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="border border-gray-200 p-2 text-center">1</td>
-              <td className="border border-gray-200 p-2 text-center">Pieza A</td>
-              <td className="border border-gray-200 p-2 text-center">50</td>
-              <td className="border border-gray-200 p-2 text-center">$10.00</td>
-              <td className="border border-gray-200 p-2 text-center">Proveedor XYZ</td>
-              <td className="border border-gray-200 p-2 text-center">Electrónica</td>
-              <td className="border border-gray-200 p-2 text-center">
-                <button className="bg-yellow-500 text-white px-3 py-1 rounded mr-2 hover:bg-yellow-600">Editar</button>
-                <button className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Eliminar</button>
-              </td>
-            </tr>
-            {/* Agrega más filas aquí según sea necesario */}
+            {inventory.map((product) => (
+              <tr key={product.id} className="border-b border-gray-200 text-center">
+                <td className="p-2">{product.id}</td>
+                <td className="p-2">
+                  {editingId === product.id ? (
+                    <input
+                      type="text"
+                      name="name"
+                      value={editedProduct.name}
+                      onChange={handleInputChange}
+                      className="border border-gray-300 p-1 rounded w-full"
+                    />
+                  ) : (
+                    product.name
+                  )}
+                </td>
+                <td className="p-2">
+                  {editingId === product.id ? (
+                    <input
+                      type="number"
+                      name="quantity"
+                      value={editedProduct.quantity}
+                      onChange={handleInputChange}
+                      className="border border-gray-300 p-1 rounded w-full"
+                    />
+                  ) : (
+                    product.quantity
+                  )}
+                </td>
+                <td className="p-2">
+                  {editingId === product.id ? (
+                    <input
+                      type="number"
+                      name="price"
+                      value={editedProduct.price}
+                      onChange={handleInputChange}
+                      className="border border-gray-300 p-1 rounded w-full"
+                    />
+                  ) : (
+                    `$${product.price.toFixed(2)}`
+                  )}
+                </td>
+                <td className="p-2">
+                  {editingId === product.id ? (
+                    <input
+                      type="text"
+                      name="supplier"
+                      value={editedProduct.supplier}
+                      onChange={handleInputChange}
+                      className="border border-gray-300 p-1 rounded w-full"
+                    />
+                  ) : (
+                    product.supplier
+                  )}
+                </td>
+                <td className="p-2">
+                  {editingId === product.id ? (
+                    <input
+                      type="text"
+                      name="category"
+                      value={editedProduct.category}
+                      onChange={handleInputChange}
+                      className="border border-gray-300 p-1 rounded w-full"
+                    />
+                  ) : (
+                    product.category
+                  )}
+                </td>
+                <td className="p-2">
+                  {editingId === product.id ? (
+                    <button
+                      onClick={() => handleSaveClick(product.id)}
+                      className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
+                    >
+                      Guardar
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleEditClick(product)}
+                      className="bg-yellow-500 text-white px-3 py-1 rounded mr-2 hover:bg-yellow-600"
+                    >
+                      Editar
+                    </button>
+                  )}
+                  <button className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
+                    Eliminar
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
